@@ -1,0 +1,16 @@
+<app-log-in-form
+  *ngIf="display === 'login'"
+  (loggedIn)="userRegistered($event)"
+  [backEnd]="backEnd"
+></app-log-in-form>
+
+<app-register-form
+  *ngIf="display === 'register'"
+  (registered)="userRegistered($event)"
+  [backEnd]="backEnd"
+></app-register-form>
+
+<div class="text-center mt-3">
+  <a *ngIf="display === 'login'" href="javascript:void(0)" (click)="showRegisterDisplay()">Register</a>
+  <a *ngIf="display === 'register'" href="javascript:void(0)" (click)="showLogInDisplay()">Login</a>
+</div>

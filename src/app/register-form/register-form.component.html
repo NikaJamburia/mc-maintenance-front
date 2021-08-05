@@ -1,0 +1,44 @@
+<form onsubmit="return false" (ngSubmit)="register()" class="form" [formGroup]="form">
+
+    <div class="form-group">
+        <label class="text-secondary mb-1" for="">Username</label>
+      <input class="{{errorClasses(userName)}} form-control" required type="text" formControlName="userName" #userName>
+      <ng-container *ngIf="isInValid(userName)">
+          <ng-container *ngFor="let error of getErrors(userName)">
+            <small class="text-danger">{{error}}</small>
+          </ng-container>
+      </ng-container>
+    </div>
+
+    <div class="form-group row g-2 mt-3">
+
+      <div class="form-group col">
+          <label class="text-secondary mb-1" for="">Password</label>
+        <input class="{{errorClasses(password)}} form-control" required type="password" minlength="8" formControlName="password" #password>
+        <ng-container *ngIf="isInValid(password)">
+            <ng-container *ngFor="let error of getErrors(password)">
+              <small class="text-danger">{{error}}</small>
+            </ng-container>
+        </ng-container>
+      </div>
+
+      <div class="form-group col">
+          <label class="text-secondary mb-1" for="">Repeat password</label>
+        <input class="{{errorClasses(passwordR)}} form-control" required type="password" minlength="8" formControlName="passwordR" #passwordR>
+        <ng-container *ngIf="isInValid(passwordR)">
+            <ng-container *ngFor="let error of getErrors(passwordR)">
+              <small class="text-danger">{{error}}</small>
+            </ng-container>
+        </ng-container>
+      </div>
+
+    </div>
+
+    <p class="mt-3 text-danger" *ngFor="let error of errors"><b>{{error}}</b></p>
+
+    <button class="btn btn-primary w-100 mt-3" type="submit" [disabled]="form.invalid || registrationInProgress">
+        <span *ngIf="!registrationInProgress">Register</span>
+        <span *ngIf="registrationInProgress" class="spinner-border spinner-border-sm" role="status"></span>
+    </button>
+
+</form>
