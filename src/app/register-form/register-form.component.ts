@@ -4,6 +4,7 @@ import { BaseFormComponent } from '../base-form-component';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { BackEndClient } from '../back-end-client/back-end-client';
+import { getServerErrorText } from '../back-end-client/response-data';
 
 @Component({
   selector: 'app-register-form',
@@ -47,7 +48,7 @@ export class RegisterFormComponent extends BaseFormComponent implements OnInit, 
       }).pipe(finalize(() => this.registrationInProgress = false))
       .subscribe(
           userData => this.registered.emit(userData),
-          err => this.errors.push(err.error.message)
+          err => this.errors.push(getServerErrorText(err))
       )
     }
   }

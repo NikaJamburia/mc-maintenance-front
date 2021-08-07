@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { BackEndClient } from '../back-end-client/back-end-client';
 import { UserCredentials } from '../back-end-client/request-data';
+import { getServerErrorText } from '../back-end-client/response-data';
 import { BaseFormComponent } from '../base-form-component';
 
 @Component({
@@ -49,7 +50,7 @@ export class LogInFormComponent extends BaseFormComponent implements OnInit, OnD
         .pipe(finalize(() => this.logInInProgress = false))
         .subscribe(
             session => this.loggedIn.emit({ sessionData: session, credentials: credentials }),
-            err => this.errors.push(err.error.message)
+            err => this.errors.push(getServerErrorText(err))
         )
     }
   }

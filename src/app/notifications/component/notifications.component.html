@@ -1,0 +1,25 @@
+<ngb-toast class="mt-2"
+    *ngFor="let toast of notificationService.notificationToasts"
+    [class]="toast.cssClasses"
+    [autohide]="true"
+    [delay]="toast.dissapearAfter || 5000"
+    (hidden)="notificationService.remove(toast)"
+>
+
+    <fa-icon 
+        *ngIf="toast.content.icon" 
+        class="{{toast.content.iconCssClasses}}" 
+        [icon]="toast.content.icon!">
+    </fa-icon>
+    {{toast.content.text}}
+
+
+    <div class="d-flex" *ngIf="toast.buttons">
+        <button 
+            *ngFor="let btn of toast.buttons" 
+            class="btn btn-sm btn-{{btn.color}} me-2 mt-2" 
+            (click)="btn.onClick(); clearNotifications()"
+            >{{btn.text}}
+        </button>
+    </div>
+</ngb-toast>
