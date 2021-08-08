@@ -1,0 +1,7 @@
+.add-bike-btn {
+    transition: 300ms;
+}
+
+.add-bike-btn:hover {
+    background-color: #0f5ed6 !important;
+}

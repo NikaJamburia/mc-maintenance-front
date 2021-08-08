@@ -14,6 +14,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NotificationsComponent } from './notifications/component/notifications.component';
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { MenuComponent } from './schedule-page/menu/menu.component';
+import { BikeSelectComponent } from './schedule-page/bike-select/bike-select.component';
+import { DistanceStringPipe } from './pipes/distance-string.pipe';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { MenuComponent } from './schedule-page/menu/menu.component';
     AuthorizationPageComponent,
     NotificationsComponent,
     SchedulePageComponent,
-    MenuComponent
+    MenuComponent,
+    BikeSelectComponent,
+    DistanceStringPipe
   ],
   imports: [
     BrowserModule,

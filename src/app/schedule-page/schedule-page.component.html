@@ -1,4 +1,8 @@
 <p *ngIf="loadingData">loading!</p>
+
 <div *ngIf="schedules">
-    {{ schedules | json }}
+    <app-bike-select
+        [schedules]="schedules"
+        (bikeSelected)="displayScheduleDetails($event)"
+    ></app-bike-select>
 </div>

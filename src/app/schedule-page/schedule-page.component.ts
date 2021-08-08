@@ -55,4 +55,8 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
     }
   }
 
+  displayScheduleDetails(bikeSchedule: BikeSchedule) {
+    console.log(bikeSchedule);
+  }
+
 }

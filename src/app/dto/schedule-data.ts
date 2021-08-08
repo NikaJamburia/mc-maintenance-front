@@ -22,5 +22,5 @@ export interface ScheduleItem {
 
 export interface ScheduleItemEntry {
     odometerReading: OdometerReading,
-    entryDate: Date
+    entryDate: number[]
 }
