@@ -1,0 +1,16 @@
+<div class="d-inline-block">
+    <span *ngIf="!updating" style="cursor:pointer" (mouseenter)="showUpdtBtn = true" (mouseleave)="showUpdtBtn = false" (click)="updating = true">
+        {{displayText}}
+        <fa-icon *ngIf="showUpdtBtn" class="ms-2 text-main" [icon]="editIcon"></fa-icon>
+    </span>
+    
+    <span *ngIf="updating" class="d-flex">
+        <span class="input-group" style="width: {{getInputLength()}}ch !important;">
+            <input type="text" class="form-control" required value="{{updateText}}" #updateInput autofocus >
+            <button class="btn btn-main" (click)="update(updateInput.value)">
+                <fa-icon class="ms-2" [icon]="editIcon"></fa-icon>
+            </button>
+        </span>
+        <fa-icon style="cursor: pointer;font-size: small;" class="text-secondary ms-2" (click)="updating = false; showUpdtBtn = false;" [icon]="closeIcon"></fa-icon>
+    </span>
+</div>

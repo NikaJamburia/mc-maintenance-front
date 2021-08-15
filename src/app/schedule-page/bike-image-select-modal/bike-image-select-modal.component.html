@@ -1,0 +1,14 @@
+<div class="modal-header d-flex align-items-center">
+    <h4 class="modal-title" style="flex-grow:1">Select image</h4>
+    <div class="text-secondary" style="cursor: pointer;" (click)="activeModal.close(undefined)">
+        <h4><fa-icon [icon]="closeIcon"></fa-icon></h4>
+    </div>
+</div>
+
+<div class="modal-body d-flex flex-wrap align-items-center justify-content-center">
+    
+    <div *ngFor="let img of availableImages" class="m-3" (click)="select(img)" style="cursor: pointer;">
+        <img src="assets/img/{{img}}" alt="" style="max-width: 100px;height: auto;" class="img-fluid mt-2 mx-auto">
+    </div>
+
+</div>

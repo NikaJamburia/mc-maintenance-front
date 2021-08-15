@@ -1,8 +1,18 @@
-<p *ngIf="loadingData">loading!</p>
-
-<div *ngIf="schedules">
-    <app-bike-select
-        [schedules]="schedules"
-        (bikeSelected)="displayScheduleDetails($event)"
-    ></app-bike-select>
+<div *ngIf="loadingData" class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
 </div>
+
+<app-bike-select
+    *ngIf="schedules && !selectedSchedule"
+    [schedules]="schedules"
+    (bikeSelected)="displayScheduleDetails($event)"
+></app-bike-select>
+
+<app-schedule-details-page
+    *ngIf="selectedSchedule"
+    [schedule]="selectedSchedule"
+    (scheduleUpdated)="updateSchedule()"
+    (back)="selectedSchedule = undefined"
+></app-schedule-details-page>

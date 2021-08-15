@@ -31,6 +31,6 @@ export class HttpBackEndClientService implements BackEndClient {
   }
 
   saveMaintenanceSchedules(sessionId: string, schedule: BikeSchedule[]): Observable<SingleMessageResponse> {
-    throw this.httpClient.post<SingleMessageResponse>(this.URL + "/maintenance-schedule", schedule, { headers: { "session-id": sessionId } })
+    return this.httpClient.post<SingleMessageResponse>(this.URL + "/maintenance-schedule", schedule, { headers: { "session-id": sessionId } })
   }
 }

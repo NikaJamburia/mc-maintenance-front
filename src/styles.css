@@ -10,3 +10,47 @@
     border: 0;
     width: 100%;
 }
+
+.btn-main {
+    background-color: rgb(129, 59, 194);
+    transition: 300ms;
+    color: white;
+}
+
+.btn-main:hover {
+    background-color: rgb(109, 54, 161);
+    color: white;
+}
+
+.btn-outline-main {
+    border: 1px solid rgb(129, 59, 194);
+    color: rgb(129, 59, 194);
+    transition: 300ms;
+}
+
+.btn-outline-main:hover {
+    background-color: rgb(129, 59, 194);
+    color: white;
+}
+
+.btn-outline-main:checked {
+    background-color: rgb(129, 59, 194);
+    color: white;
+}
+
+.btn-outline-main:focus {
+    background-color: rgb(129, 59, 194) !important;
+    color: white !important;
+}
+
+.text-main {
+    color: rgb(129, 59, 194);
+}
+
+.link-main {
+    color: rgb(129, 59, 194);
+}
+
+.link-main:hover {
+    color: rgb(112, 52, 168);
+}

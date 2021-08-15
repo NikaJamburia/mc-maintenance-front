@@ -14,6 +14,8 @@ export class BikeSelectComponent implements OnInit {
 
   plusIcon = faPlus
 
+  creatingSchedule = false
+
   constructor() { }
 
   ngOnInit(): void {
@@ -21,10 +23,16 @@ export class BikeSelectComponent implements OnInit {
 
   selectBike(bikeSchedule: BikeSchedule) {
     this.bikeSelected.emit(bikeSchedule)
+
   }
 
-  showAddBikeForm() {
-    console.log("add bike");
+  showCreateScheduleForm() {
+    this.creatingSchedule = true
+  }
+
+  newScheduleCreated(schedule: BikeSchedule) {
+    this.creatingSchedule = false
+    this.schedules.push(schedule)
     
   }
 

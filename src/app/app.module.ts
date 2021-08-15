@@ -16,6 +16,14 @@ import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { MenuComponent } from './schedule-page/menu/menu.component';
 import { BikeSelectComponent } from './schedule-page/bike-select/bike-select.component';
 import { DistanceStringPipe } from './pipes/distance-string.pipe';
+import { CreateScheduleFormComponent } from './schedule-page/create-schedule-form/create-schedule-form.component';
+import { ScheduleDetailsPageComponent } from './schedule-page/schedule-details-page/schedule-details-page.component';
+import { UpdeatableTextComponent } from './updeatable-text/updeatable-text.component';
+import { JsonDatePipe } from './pipes/json-date.pipe';
+import { JsonDateTimePipe } from './pipes/json-date-time.pipe';
+import { AddScheduleItemFormComponent } from './schedule-page/add-schedule-item-form/add-schedule-item-form.component';
+import { AddScheduleItemEntryFormComponent } from './schedule-page/add-schedule-item-entry-form/add-schedule-item-entry-form.component';
+import { BikeImageSelectModalComponent } from './schedule-page/bike-image-select-modal/bike-image-select-modal.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +35,15 @@ import { DistanceStringPipe } from './pipes/distance-string.pipe';
     SchedulePageComponent,
     MenuComponent,
     BikeSelectComponent,
-    DistanceStringPipe
+    DistanceStringPipe,
+    CreateScheduleFormComponent,
+    ScheduleDetailsPageComponent,
+    UpdeatableTextComponent,
+    JsonDatePipe,
+    JsonDateTimePipe,
+    AddScheduleItemFormComponent,
+    AddScheduleItemEntryFormComponent,
+    BikeImageSelectModalComponent
   ],
   imports: [
     BrowserModule,

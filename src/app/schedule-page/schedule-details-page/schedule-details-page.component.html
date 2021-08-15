@@ -1,0 +1,115 @@
+<div class="p-3">
+
+    <div class="d-flex align-items-center">
+        <div 
+            (click)="back.emit()" 
+            class="d-flex align-items-center justify-content-center btn-outline-main" 
+            style="border-radius: 50%; height: 50px;width: 50px;cursor: pointer;"
+        >
+            <fa-icon [icon]="backIcon"></fa-icon>
+        </div>
+
+        <div class="position-relative mx-3" (click)="showImgSelectWindow()" (mouseenter)="showImgEditIcon = true" (mouseleave)="showImgEditIcon = false" style="cursor: pointer;">
+            <img src="assets/img/{{schedule.bikeImage}}" alt="" style="max-width: 100px;height: auto;" class="img-fluid mt-2 mx-auto">
+            <div *ngIf="showImgEditIcon" class="text-main rounded position-absolute start-100 top-0 translate-middle">
+                <fa-icon [icon]="editIcon"></fa-icon>
+            </div>
+        </div>
+
+        <div>
+            <h2>
+                <app-updeatable-text [displayText]="schedule.bikeName" [updateText]="schedule.bikeName" (updated)="updateName($event)"></app-updeatable-text>
+            </h2>
+            <p>
+                Odometer: <b><app-updeatable-text 
+                    [displayText]="schedule.lastOdometerReading | distanceString" 
+                    [updateText]="schedule.lastOdometerReading.value" 
+                    (updated)="updateOdometer($event)"
+                ></app-updeatable-text></b>
+            </p>
+        </div>
+
+    </div>
+
+
+    <hr>
+
+    <button class="btn btn-main ms-2" (click)="showAddNewScheduleItemForm()">
+        <fa-icon [icon]="addIcon"></fa-icon> Add new service
+    </button>
+
+    <div class="d-flex flex-wrap">
+
+        <div class="m-2" *ngFor="let serviceItem of schedule.schedule">
+
+            <ng-container *ngIf="!isBeingUpdated(serviceItem)">
+                <div class="p-2 border bg-light d-flex align-items-center">
+                    <b style="flex-grow: 1;">{{serviceItem.name}}</b>
+                    <div class="bg-light mx-2" style="cursor: pointer;" (click)="showEditForm(serviceItem)"><fa-icon [icon]="editIcon"></fa-icon></div>
+                    <div class="bg-light" placement="top" ngbTooltip="Every {{serviceItem.interval | distanceString}}"><fa-icon [icon]="questionIcon"></fa-icon></div>
+                </div>
+    
+                <div class="border d-flex" *ngFor="let entry of serviceItem.entries">
+                    <div class="border-end p-2 ">{{entry.entryDate | jsonDate}}</div>
+                    <div class="p-2 ">{{entry.odometerReading | distanceString}}</div>
+                </div>
+    
+                <div (click)="showAddEntryForm(serviceItem)" class="border d-flex p-2 align-items-center justify-content-center" style="cursor: pointer">
+                    <fa-icon class="me-1" [icon]="addIcon"></fa-icon> Add entry
+                </div>
+    
+                <div *ngIf="serviceItem.entries.length > 0" class="p-2 border alert-{{nextServiceSeverity(serviceItem, schedule.lastOdometerReading)}}">
+                    {{nextServiceRemiderText(serviceItem)}}
+                </div>
+            </ng-container>
+
+            <div *ngIf="isBeingUpdated(serviceItem)">
+                <div class="p-2 border bg-light d-flex align-items-center position-relative">
+                    <input style="flex-grow:1" class="form-control form-control-sm" required value="{{serviceItem.name}}" type="text" #newItemName>
+                    <div class="position-absolute start-100 top-0 translate-middle" style="cursor: pointer;" placement="top" ngbTooltip="Remove" (click)="removeScheduleItem(serviceItem)"><fa-icon [icon]="closeIcon"></fa-icon></div>
+                </div>
+    
+                <div class="border p-2">
+                    <div class="form-group">
+                        <small><label class="text-secondary" for="">Service interval</label></small>
+                        <div class="input-group input-group-sm">
+                            <input 
+                                style="max-width:{{scheduleItemToEdit!.name.length*1.5}}ch!important;" 
+                                class="form-control form-control-sm" required type="number" 
+                                value="{{scheduleItemToEdit!.interval.value}}"
+                                #newIntervalValue>
+                            <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+                                <input value="{{serviceItem.interval.value}}" type="radio" class="btn-check" name="btnradio" id="btnradio1" value="" autocomplete="off">
+                                <label 
+                                    (click)="itemIntervalUnitToEdit = distanceUnit.MILES" 
+                                    class="btn btn-{{itemIntervalUnitToEdit === distanceUnit.MILES ? '' : 'outline-'}}main" 
+                                    for="btnradio1">Miles
+                                </label>
+                                
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                                <label 
+                                    (click)="itemIntervalUnitToEdit = distanceUnit.KM" 
+                                    class="btn btn-{{itemIntervalUnitToEdit === distanceUnit.KM ? '' : 'outline-'}}main" 
+                                    for="btnradio2">Km
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-1 mt-2">
+                        <div class="col">
+                            <button (click)="editScheduleItem(newItemName, newIntervalValue, serviceItem)" class="btn btn-sm w-100 btn-main">Save</button>
+                        </div>
+                        <div class="col">
+                            <button (click)="scheduleItemToEdit = undefined" class="btn btn-sm w-100 btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+
+                </div>    
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

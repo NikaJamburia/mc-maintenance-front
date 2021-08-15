@@ -11,7 +11,7 @@ export interface OdometerReading {
 }
 
 export enum DistanceUnit {
-    MILES, KM
+    MILES = "MILES", KM = "KM"
 }
 
 export interface ScheduleItem {

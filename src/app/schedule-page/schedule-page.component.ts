@@ -6,7 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { AccountService } from '../account-service.service';
 import { HttpBackEndClientService } from '../back-end-client/http-back-end-client.service';
 import { getServerErrorText } from '../back-end-client/response-data';
-import { BikeSchedule } from '../dto/schedule-data';
+import { miles } from '../dto/odometer';
+import { BikeSchedule, DistanceUnit } from '../dto/schedule-data';
 import { NotificationService } from '../notifications/service/notification.service';
 
 @Component({
@@ -25,8 +26,10 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
 
   loadingData = false
   schedules?: BikeSchedule[]
+  selectedSchedule?: BikeSchedule
 
   private getShedulesSubscription?: Subscription
+  private updateScheduleSubscription?: Subscription
 
   ngOnInit(): void {
     this.loadingData = true
@@ -44,6 +47,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.getShedulesSubscription?.unsubscribe()
+    this.updateScheduleSubscription?.unsubscribe()
   }
 
   handleError(error: HttpErrorResponse) {
@@ -56,7 +60,28 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
   }
 
   displayScheduleDetails(bikeSchedule: BikeSchedule) {
-    console.log(bikeSchedule);
+    this.selectedSchedule = bikeSchedule
+  }
+
+  updateSchedule() {
+    let sessionId = this.accountService.getExistingSession()?.sessionData.id
+
+    if(sessionId !== undefined) {
+      console.log("aaaa");
+      
+      this.updateScheduleSubscription = this.backEnd.saveMaintenanceSchedules(sessionId, this.schedules!)
+        .subscribe(
+          resp => this.notificationService.showStandardSuccess(resp.message),
+          err => this.handleError(err)
+        )
+      console.log(this.schedules);
+      
+    } else {
+      this.accountService.logOut()
+      this.router.navigate(['/authorization'])
+    }
+    
+    
   }
 
 }

@@ -1,0 +1,55 @@
+
+
+<form onsubmit="return false" (ngSubmit)="create()" class="form" [formGroup]="form">
+    <div class="modal-header">
+        <h4 class="modal-title">Add new entry</h4>
+    </div>
+    
+    <div class="modal-body">
+        <div class="form-group">
+        <label class="text-secondary mb-1" for="">Date</label>
+            <input class="{{errorClasses(dateSelect)}} form-control" required type="date" formControlName="date" #dateSelect>
+            <ng-container *ngIf="isInValid(dateSelect)">
+                <ng-container *ngFor="let error of getErrors(dateSelect)">
+                <small class="text-danger">{{error}}</small>
+                </ng-container>
+            </ng-container>
+        </div>
+    
+        <div class="form-group mt-3">
+            <label class="text-secondary mb-1" for="">Odometer reading</label>
+            <div class="input-group">
+                <input class="{{errorClasses(intervalValue)}} form-control" required type="number" formControlName="odometerValue" #intervalValue>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                    <label 
+                        (click)="selectedOdometerUnit = distanceUnit.MILES" 
+                        class="btn btn-{{selectedOdometerUnit === distanceUnit.MILES ? '' : 'outline-'}}main" 
+                        for="btnradio1">Miles
+                    </label>
+                    
+                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                    <label 
+                        (click)="selectedOdometerUnit = distanceUnit.KM" 
+                        class="btn btn-{{selectedOdometerUnit === distanceUnit.KM ? '' : 'outline-'}}main" 
+                        for="btnradio2">Km
+                    </label>
+                </div>
+            </div>
+    
+            <ng-container *ngIf="isInValid(intervalValue)">
+                <ng-container *ngFor="let error of getErrors(intervalValue)">
+                <small class="text-danger">{{error}}</small>
+                </ng-container>
+            </ng-container>
+        </div>
+        
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn btn-main w-100" type="submit" [disabled]="form.invalid">Add</button>
+        <button class="btn btn-secondary w-100" type="button" (click)="modal.close(undefined)">Cancel</button>
+    </div>
+    
+</form>
+    
