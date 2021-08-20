@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "/dist/mc-maintenance-front",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
