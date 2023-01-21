@@ -23,16 +23,16 @@
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                 <label 
-                    (click)="selectedIntervalUnit = distanceUnit.MILES" 
-                    class="btn btn-{{selectedIntervalUnit === distanceUnit.MILES ? '' : 'outline-'}}main" 
-                    for="btnradio1">Miles
+                    (click)="selectedIntervalType = intervalType.DISTANCE" 
+                    class="btn btn-{{selectedIntervalType === intervalType.DISTANCE ? '' : 'outline-'}}main" 
+                    for="btnradio1">{{distanceUnit}}
                 </label>
                 
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                 <label 
-                    (click)="selectedIntervalUnit = distanceUnit.KM" 
-                    class="btn btn-{{selectedIntervalUnit === distanceUnit.KM ? '' : 'outline-'}}main" 
-                    for="btnradio2">Km
+                    (click)="selectedIntervalType = intervalType.MONTHS" 
+                    class="btn btn-{{selectedIntervalType === intervalType.MONTHS ? '' : 'outline-'}}main" 
+                    for="btnradio2">Month
                 </label>
             </div>
         </div>

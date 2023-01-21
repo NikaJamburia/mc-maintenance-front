@@ -2,11 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { AccountService } from '../account-service.service';
 import { HttpBackEndClientService } from '../back-end-client/http-back-end-client.service';
 import { getServerErrorText } from '../back-end-client/response-data';
-import { miles } from '../dto/odometer';
 import { BikeSchedule, DistanceUnit } from '../dto/schedule-data';
 import { NotificationService } from '../notifications/service/notification.service';
 
@@ -63,7 +61,7 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
     this.selectedSchedule = bikeSchedule
   }
 
-  updateSchedule() {
+  updateSchedule(bikeSchedule: BikeSchedule) {
     let sessionId = this.accountService.getExistingSession()?.sessionData.id
 
     if(sessionId !== undefined) {
@@ -71,7 +69,11 @@ export class SchedulePageComponent implements OnInit, OnDestroy {
       
       this.updateScheduleSubscription = this.backEnd.saveMaintenanceSchedules(sessionId, this.schedules!)
         .subscribe(
-          resp => this.notificationService.showStandardSuccess(resp.message),
+          resp => {
+            this.notificationService.showStandardSuccess("Changes saved!")
+            this.schedules = resp
+            this.selectedSchedule = resp.find(r => r.bikeName === bikeSchedule.bikeName)
+          },
           err => this.handleError(err)
         )
       console.log(this.schedules);

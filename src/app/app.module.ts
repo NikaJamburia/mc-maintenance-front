@@ -15,7 +15,6 @@ import { NotificationsComponent } from './notifications/component/notifications.
 import { SchedulePageComponent } from './schedule-page/schedule-page.component';
 import { MenuComponent } from './schedule-page/menu/menu.component';
 import { BikeSelectComponent } from './schedule-page/bike-select/bike-select.component';
-import { DistanceStringPipe } from './pipes/distance-string.pipe';
 import { CreateScheduleFormComponent } from './schedule-page/create-schedule-form/create-schedule-form.component';
 import { ScheduleDetailsPageComponent } from './schedule-page/schedule-details-page/schedule-details-page.component';
 import { UpdeatableTextComponent } from './updeatable-text/updeatable-text.component';
@@ -35,7 +34,6 @@ import { BikeImageSelectModalComponent } from './schedule-page/bike-image-select
     SchedulePageComponent,
     MenuComponent,
     BikeSelectComponent,
-    DistanceStringPipe,
     CreateScheduleFormComponent,
     ScheduleDetailsPageComponent,
     UpdeatableTextComponent,

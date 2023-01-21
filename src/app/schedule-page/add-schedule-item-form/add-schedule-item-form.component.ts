@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BaseFormComponent } from 'src/app/base-form-component';
-import { DistanceUnit, ScheduleItem } from 'src/app/dto/schedule-data';
+import { DistanceUnit, IntervalType, ScheduleItem } from 'src/app/dto/schedule-data';
 
 @Component({
   selector: 'app-add-schedule-item-form',
@@ -11,15 +11,20 @@ import { DistanceUnit, ScheduleItem } from 'src/app/dto/schedule-data';
 })
 export class AddScheduleItemFormComponent extends BaseFormComponent implements OnInit {
 
-  constructor(public activeModal: NgbActiveModal, formBuilder: FormBuilder) {
+  constructor(
+    public activeModal: NgbActiveModal, 
+    formBuilder: FormBuilder,
+    ) {
     super(formBuilder.group({
       name: [''],
       intervalValue: ['']
     }))
   }
 
-  selectedIntervalUnit = DistanceUnit.MILES
-  distanceUnit = DistanceUnit
+  selectedIntervalType = IntervalType.DISTANCE
+  intervalType = IntervalType
+
+  @Input() public distanceUnit: DistanceUnit = DistanceUnit.KM
 
   ngOnInit(): void {
   }
@@ -30,11 +35,9 @@ export class AddScheduleItemFormComponent extends BaseFormComponent implements O
     if(this.form.valid) {
       let newItem: ScheduleItem = {
         name: this.form.controls.name.value,
-        interval: {
-          value: this.form.controls.intervalValue.value,
-          unit: this.selectedIntervalUnit,
-        },
-        entries: []
+        interval: parseInt(this.form.controls.intervalValue.value),
+        entries: [],
+        intervalType: this.selectedIntervalType
       }
 
       this.activeModal.close(newItem)

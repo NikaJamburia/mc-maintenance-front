@@ -1,26 +1,29 @@
 export interface BikeSchedule {
     bikeName: string,
-    lastOdometerReading: OdometerReading,
+    lastOdometerReading: number,
+    odometerUnits: DistanceUnit,
     bikeImage: string,
     schedule: ScheduleItem[]
 }
 
-export interface OdometerReading {
-    value: number,
-    unit: DistanceUnit
+export interface ScheduleItem {
+    name: string,
+    interval: number,
+    intervalType: IntervalType,
+    nextServiceMileage?: number
+    nextServiceDate?: string
+    entries: ScheduleItemEntry[]
+}
+
+export interface ScheduleItemEntry {
+    odometerReading: number,
+    entryDate: string
 }
 
 export enum DistanceUnit {
     MILES = "MILES", KM = "KM"
 }
 
-export interface ScheduleItem {
-    name: String,
-    interval: OdometerReading,
-    entries: ScheduleItemEntry[]
-}
-
-export interface ScheduleItemEntry {
-    odometerReading: OdometerReading,
-    entryDate: number[]
+export enum IntervalType {
+    MONTHS = "MONTHS", DISTANCE = "DISTANCE"
 }

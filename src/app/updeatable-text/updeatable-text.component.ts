@@ -30,7 +30,7 @@ export class UpdeatableTextComponent implements OnInit {
   }
 
   getInputLength(): number {    
-    return this.displayText.length * 1.5
+    return this.displayText.length * 2
   }
 
 }

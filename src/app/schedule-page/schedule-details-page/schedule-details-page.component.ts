@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { faArrowLeft, faEdit, faPlus, faQuestionCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { miles, toMiles } from 'src/app/dto/odometer';
-import { BikeSchedule, DistanceUnit, OdometerReading, ScheduleItem, ScheduleItemEntry } from 'src/app/dto/schedule-data';
-import { DistanceStringPipe } from 'src/app/pipes/distance-string.pipe';
+import { BikeSchedule, DistanceUnit, IntervalType, ScheduleItem, ScheduleItemEntry } from 'src/app/dto/schedule-data';
 import { AddScheduleItemEntryFormComponent } from '../add-schedule-item-entry-form/add-schedule-item-entry-form.component';
 import { AddScheduleItemFormComponent } from '../add-schedule-item-form/add-schedule-item-form.component';
 import { BikeImageSelectModalComponent } from '../bike-image-select-modal/bike-image-select-modal.component';
@@ -41,47 +39,71 @@ export class ScheduleDetailsPageComponent implements OnInit {
 
   updateName(newName: string) {
     this.schedule.bikeName = newName
-    this.scheduleUpdated.emit()
+    this.scheduleUpdated.emit(this.schedule)
   }
 
   updateOdometer(newValue: string) {
-    this.schedule.lastOdometerReading = { value: parseInt(newValue), unit: this.schedule.lastOdometerReading.unit  }
-    this.scheduleUpdated.emit()
+    this.schedule.lastOdometerReading = parseInt(newValue)
+    this.scheduleUpdated.emit(this.schedule)
   }
 
-  nextServiceSeverity(scheduleItem: ScheduleItem, currentOdometer: OdometerReading): string {
+  nextServiceSeverity(scheduleItem: ScheduleItem, currentOdometer: number): string {
     let lastEntry = [...scheduleItem.entries].pop()
 
     if (!lastEntry) {
       return "success"
     }
 
-    let nextServiceOdometerMiles = toMiles(lastEntry.odometerReading).value + toMiles(scheduleItem.interval).value
-    let currentOdometerAsMiles = toMiles(currentOdometer).value
-
-    if(currentOdometerAsMiles > nextServiceOdometerMiles) {
-      return "danger"
+    if(scheduleItem.nextServiceMileage) {
+      if(currentOdometer > scheduleItem.nextServiceMileage!!) {
+        return "danger"
+      }
+  
+      let percentage = (currentOdometer * 100) / scheduleItem.nextServiceMileage
+      return percentage > 75 ? "warning" : "success"
     }
 
-    let percentage = (currentOdometerAsMiles * 100) / nextServiceOdometerMiles
-    return percentage > 75 ? "warning" : "success"
+    if(scheduleItem.nextServiceDate) {
+      let today = new Date()
+      let serviceDate = new Date(scheduleItem.nextServiceDate)
+
+      if(today > serviceDate) {
+        return "danger"
+      }
+
+      let diffTime = Math.abs(serviceDate.valueOf() - today.valueOf());
+      let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      return diffDays <= 30 ? "warning" : "success"
+    }
+
+    return ""
 
   }
 
   nextServiceRemiderText(scheduleItem: ScheduleItem): string {
-    let lastEntry = [...scheduleItem.entries].pop()!
-    let nextServiceOdometer =  miles(toMiles(lastEntry.odometerReading).value + toMiles(scheduleItem.interval).value)
+    if(scheduleItem.nextServiceMileage) {
+      let isLate = this.schedule.lastOdometerReading > scheduleItem.nextServiceMileage
+      return `${isLate ? 'Missed' : ''} Service on ${scheduleItem.nextServiceMileage}`
+    }
 
-    return `${nextServiceOdometer.value >= toMiles(this.schedule.lastOdometerReading).value ? 'Next' : 'Missed'} service on ${nextServiceOdometer.value} ${nextServiceOdometer.unit.toString().toLowerCase()}`
+    if(scheduleItem.nextServiceDate) {
+      let today = new Date()
+      let nextServiceDay = new Date(scheduleItem.nextServiceDate)
+      let isLate = today > nextServiceDay
+      return `${isLate ? 'Missed' : ''} Service on ${scheduleItem.nextServiceDate}`
+    }
+
+    return ""
   }
 
   addNewItem(item: ScheduleItem) {    
     this.schedule.schedule.push(item)
-    this.scheduleUpdated.emit()
+    this.scheduleUpdated.emit(this.schedule)
   }
 
   showAddNewScheduleItemForm() {
-    const modalRef =this.modal.open(AddScheduleItemFormComponent)
+    const modalRef = this.modal.open(AddScheduleItemFormComponent)
+    modalRef.componentInstance.distanceUnit = this.schedule.odometerUnits
 
     modalRef.result.then(result => {
       if(result) {
@@ -96,12 +118,11 @@ export class ScheduleDetailsPageComponent implements OnInit {
 
   showEditForm(item: ScheduleItem) {
     this.scheduleItemToEdit = item
-    this.itemIntervalUnitToEdit = item.interval.unit
   }
 
   removeScheduleItem(scheduleItem: ScheduleItem) {
     this.schedule.schedule = this.schedule.schedule.filter(item => item !== scheduleItem)
-    this.scheduleUpdated.emit()
+    this.scheduleUpdated.emit(this.schedule)
   }
 
   editScheduleItem(nameInput: HTMLInputElement, intervalInput: HTMLInputElement, item: ScheduleItem) {
@@ -110,9 +131,9 @@ export class ScheduleDetailsPageComponent implements OnInit {
       throw new Error("aaa")
     } else {
       item.name = nameInput.value
-      item.interval = { value: parseInt(intervalInput.value), unit: this.itemIntervalUnitToEdit! }
+      item.interval = parseInt(intervalInput.value)
       this.scheduleItemToEdit = undefined
-      this.scheduleUpdated.emit()
+      this.scheduleUpdated.emit(this.schedule)
     }
 
   }
@@ -123,7 +144,7 @@ export class ScheduleDetailsPageComponent implements OnInit {
     modalRef.result.then(result => {
       if(result) {
         item.entries.push(result as ScheduleItemEntry)
-        this.scheduleUpdated.emit()
+        this.scheduleUpdated.emit(this.schedule)
       }
     })
   }
@@ -134,9 +155,10 @@ export class ScheduleDetailsPageComponent implements OnInit {
     modalRef.result.then(result => {
       if(result) {
         this.schedule.bikeImage = result as string
-        this.scheduleUpdated.emit()
+        this.scheduleUpdated.emit(this.schedule)
       }
     })
   }
+  
 
 }

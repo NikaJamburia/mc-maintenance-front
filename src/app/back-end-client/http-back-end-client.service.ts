@@ -7,7 +7,6 @@ import { SessionData } from '../dto/session-data';
 import { UserData } from '../dto/user-data';
 import { BackEndClient } from './back-end-client';
 import { UserCredentials } from './request-data';
-import { SingleMessageResponse } from './response-data';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +29,7 @@ export class HttpBackEndClientService implements BackEndClient {
     return this.httpClient.get<BikeSchedule[]>(this.URL + "/maintenance-schedule", { headers: { "session-id": sessionId } })
   }
 
-  saveMaintenanceSchedules(sessionId: string, schedule: BikeSchedule[]): Observable<SingleMessageResponse> {
-    return this.httpClient.post<SingleMessageResponse>(this.URL + "/maintenance-schedule", schedule, { headers: { "session-id": sessionId } })
+  saveMaintenanceSchedules(sessionId: string, schedule: BikeSchedule[]): Observable<BikeSchedule[]> {
+    return this.httpClient.post<BikeSchedule[]>(this.URL + "/maintenance-schedule", schedule, { headers: { "session-id": sessionId } })
   }
 }

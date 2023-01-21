@@ -22,8 +22,8 @@
             </h2>
             <p>
                 Odometer: <b><app-updeatable-text 
-                    [displayText]="schedule.lastOdometerReading | distanceString" 
-                    [updateText]="schedule.lastOdometerReading.value" 
+                    [displayText]="schedule.lastOdometerReading.toString() + ' ' + schedule.odometerUnits"
+                    [updateText]="schedule.lastOdometerReading" 
                     (updated)="updateOdometer($event)"
                 ></app-updeatable-text></b>
             </p>
@@ -46,12 +46,12 @@
                 <div class="p-2 border bg-light d-flex align-items-center">
                     <b style="flex-grow: 1;">{{serviceItem.name}}</b>
                     <div class="bg-light mx-2" style="cursor: pointer;" (click)="showEditForm(serviceItem)"><fa-icon [icon]="editIcon"></fa-icon></div>
-                    <div class="bg-light" placement="top" ngbTooltip="Every {{serviceItem.interval | distanceString}}"><fa-icon [icon]="questionIcon"></fa-icon></div>
+                    <div class="bg-light" placement="top" ngbTooltip="Every {{serviceItem.interval}} {{serviceItem.intervalType}}"><fa-icon [icon]="questionIcon"></fa-icon></div>
                 </div>
     
                 <div class="border d-flex" *ngFor="let entry of serviceItem.entries">
-                    <div class="border-end p-2 ">{{entry.entryDate | jsonDate}}</div>
-                    <div class="p-2 ">{{entry.odometerReading | distanceString}}</div>
+                    <div class="border-end p-2 ">{{entry.entryDate}}</div>
+                    <div class="p-2 ">{{entry.odometerReading}}</div>
                 </div>
     
                 <div (click)="showAddEntryForm(serviceItem)" class="border d-flex p-2 align-items-center justify-content-center" style="cursor: pointer">
@@ -76,10 +76,10 @@
                             <input 
                                 style="max-width:{{scheduleItemToEdit!.name.length*1.5}}ch!important;" 
                                 class="form-control form-control-sm" required type="number" 
-                                value="{{scheduleItemToEdit!.interval.value}}"
+                                value="{{scheduleItemToEdit!.interval}}"
                                 #newIntervalValue>
                             <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-                                <input value="{{serviceItem.interval.value}}" type="radio" class="btn-check" name="btnradio" id="btnradio1" value="" autocomplete="off">
+                                <input value="{{serviceItem.interval}}" type="radio" class="btn-check" name="btnradio" id="btnradio1" value="" autocomplete="off">
                                 <label 
                                     (click)="itemIntervalUnitToEdit = distanceUnit.MILES" 
                                     class="btn btn-{{itemIntervalUnitToEdit === distanceUnit.MILES ? '' : 'outline-'}}main" 

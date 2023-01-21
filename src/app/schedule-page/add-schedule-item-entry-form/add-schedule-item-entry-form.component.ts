@@ -27,20 +27,23 @@ export class AddScheduleItemEntryFormComponent extends BaseFormComponent impleme
   create() {
 
     let entry: ScheduleItemEntry = {
-      entryDate: this.toJsonArray(new Date(this.form.controls.date.value)),
-      odometerReading: { value: this.form.controls.odometerValue.value, unit: this.selectedOdometerUnit }
+      entryDate: this.toBackEndString(new Date(this.form.controls.date.value)),
+      odometerReading: parseInt(this.form.controls.odometerValue.value)
     }
 
     this.modal.close(entry)
     
   }
 
-  private toJsonArray(date: Date): number[] {
-    return [
-      date.getFullYear(),
-      date.getMonth() + 1,
-      date.getDate()
-    ]
+  private toBackEndString(date: Date): string {
+    return `${date.getFullYear()}-${this.padLeft(date.getMonth() + 1)}-${this.padLeft(date.getDate())}`    
+  }
+
+  private padLeft(num: number): string {
+    if(num < 9) {
+      return "0" + num
+    }
+    return num.toString()
   }
 
 }

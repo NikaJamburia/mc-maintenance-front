@@ -33,7 +33,8 @@ export class CreateScheduleFormComponent extends BaseFormComponent implements On
     let newSchedule: BikeSchedule = {
       bikeName: this.form.controls.bikeName.value,
       bikeImage: this.selectedImg,
-      lastOdometerReading: {unit: DistanceUnit.MILES, value: 0},
+      lastOdometerReading: 0,
+      odometerUnits: DistanceUnit.KM,
       schedule: []
     }
 

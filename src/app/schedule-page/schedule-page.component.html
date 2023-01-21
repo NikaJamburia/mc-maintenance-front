@@ -13,6 +13,6 @@
 <app-schedule-details-page
     *ngIf="selectedSchedule"
     [schedule]="selectedSchedule"
-    (scheduleUpdated)="updateSchedule()"
+    (scheduleUpdated)="updateSchedule($event)"
     (back)="selectedSchedule = undefined"
 ></app-schedule-details-page>
