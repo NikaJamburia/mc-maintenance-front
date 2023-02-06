@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backEndUrl: "http://mc-maintenance.click/api"
+  backEndUrl: "https://mc-maintenance.click/api"
 };
